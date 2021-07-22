@@ -15,9 +15,9 @@ def setup_docs(app):
 
 async def swagger(app) -> None:
     swagger_info = app["swagger_dict"]
-    print(swagger_info)
+    # print(swagger_info)
     dpath = Path(__file__).parent / "spec.md"
-    print(dpath)
+    # print(dpath)
     with open(dpath.resolve()) as swagger_file:
         desc = swagger_file.read()
         print(desc)

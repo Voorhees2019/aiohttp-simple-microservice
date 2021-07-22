@@ -1,6 +1,8 @@
 from aiohttp import web
 from decimal import Decimal, InvalidOperation
 from multidict._multidict import MultiDictProxy
+from aiohttp_apispec import docs, response_schema
+from api import schema
 
 import simplejson
 
@@ -27,7 +29,17 @@ async def update_dict(query: MultiDictProxy) -> dict:
 
 
 class DictUpdateView(web.View):
+    @docs(
+        tags=["Dict Update"],
+        summary="Display dict from url params",
+        description="Set dict from url parameters, update it and get in response",
+    )
+    @response_schema(
+        schema=schema.DictUpdateSuccessSchema(),
+        code=200,
+        description="Return success response with dict",
+    )
     async def put(self):
         updated_dict = await update_dict(self.request.query)
         data = simplejson.dumps(updated_dict)  # to normally serialize type Decimal into JSON
-        return web.json_response(data)
+        return web.Response(text=data)
